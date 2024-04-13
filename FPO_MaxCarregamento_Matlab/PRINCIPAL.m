@@ -20,6 +20,8 @@ beq = [];
 lb = [0.1];
 ub = [1000];
 
+options - optimset('Display', 'iter','Algorithm','interior-point');
+
 % Resolução
 [xsol, fval, exitflag, output, lagrange] = fmincon(@(xi) objecfun(Xi,V), x0, A, b, Aeq, beq,lb,ub, @(xi) nonlconstr(xi,V),options)
 
