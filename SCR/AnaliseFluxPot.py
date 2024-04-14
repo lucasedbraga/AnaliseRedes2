@@ -61,7 +61,61 @@ class Analise_FluxPot():
     
     def compara_tensao(self, data_vm_pu_calc, data_vm_pu_est):
 
-        
-        print(data_vm_pu_calc)
-        print(data_vm_pu_est)
+        def plot_comparativo(series1, series2):
+            # Verificar se as séries têm o mesmo índice
+            if not series1.index.equals(series2.index):
+                raise ValueError("Os índices das séries devem ser iguais.")
+            
+            # Definir categorias como índices das séries
+            categorias = series1.index.tolist()
+            
+            # Obter os valores das séries
+            valores1 = series1.values.tolist()
+            valores2 = series2.values.tolist()
+            
+            # Calcular a diferença entre os valores das séries
+            diferenca = series1 - series2
+            
+            # Criar figura com duas subplots (gráfico de barras e gráfico de linha)
+            fig = go.Figure()
+            
+            # Adicionar as duas barras ao gráfico de barras
+            fig.add_trace(go.Bar(
+                x=categorias,
+                y=valores1,
+                name='Série 1'  # Nome da primeira série
+            ))
+            fig.add_trace(go.Bar(
+                x=categorias,
+                y=valores2,
+                name='Série 2'  # Nome da segunda série
+            ))
+            
+            # Criar subplot para o gráfico de linha
+            fig.add_trace(go.Scatter(
+                x=categorias,
+                y=diferenca.values.tolist(),
+                mode='lines+markers',
+                name='Diferença',  # Nome da linha
+                yaxis='y2'  # Utiliza o segundo eixo y para o gráfico de linha
+            ))
+            
+            # Encontrar o máximo valor absoluto da diferença
+            max_diff = abs(diferenca).max()
+            
+            # Atualizar layout
+            fig.update_layout(
+                title='Gráfico de Barras e Linha Comparativos',
+                xaxis=dict(title='Categorias'),
+                yaxis=dict(title='Valores'),
+                yaxis2=dict(title='Diferença', overlaying='y', side='right', range=[-max_diff, max_diff]),  # Configurações do segundo eixo y
+                barmode='group'  # Agrupa as barras
+            )
+            
+            # Mostrar gráfico
+            fig.show()
+
+        plot_comparativo(series1=data_vm_pu_calc, series2=data_vm_pu_est)
+
+
         print(data_vm_pu_calc-data_vm_pu_est)

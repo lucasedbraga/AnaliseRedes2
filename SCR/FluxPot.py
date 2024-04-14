@@ -12,10 +12,6 @@ class FluxoDePotencia:
 
 
         self.RedeEletrica_simulada = RedeEletrica_simulada
-        self.DBAR = self.RedeEletrica_simulada.DBAR
-        self.DLIN = self.RedeEletrica_simulada.DLIN
-        self.DGER = self.RedeEletrica_simulada.DGER
-        self.DLOAD = self.RedeEletrica_simulada.DLOAD
         self.LOG_SIMULACAO.Identificacao_Simulacao(data_DSIM)
 
         self.LOG_SIMULACAO.msg_log("Leitura do Modelo Realizada")
@@ -30,10 +26,6 @@ class FluxoDePotencia:
     def executar(self):
         pp.runpp(self.RedeEletrica_simulada.net)
         self.LOG_SIMULACAO.msg_log("Fluxo de Potência Executado")
-    
-    def executar_FluxPot_Otimo(self):
-        pp.runopp(self.RedeEletrica_simulada.net)
-        self.LOG_SIMULACAO.msg_log("Fluxo de Potência Ótimo Executado")
     
     def avaliacao_tensao (self):
 
