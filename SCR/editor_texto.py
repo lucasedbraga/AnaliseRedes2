@@ -7,11 +7,11 @@ def margem():
 
 
 def error(texto):
-    print(f'\033[1;30;41m !!! ERRO : {texto} !!! \033[m', end='\n')
+    print(f'\033[1;30;41m [...] ERRO !! : {texto} !!! \033[m', end='\n')
 
 
 def aviso(texto):
-    print(f'\033[1;33m ! ATENÇÃO : {texto} ! \033[m', end='\n')
+    print(f'\033[1;33m [...] ATENÇÃO : {texto} ! \033[m', end='\n')
 
 
 def list(texto):
@@ -26,7 +26,7 @@ def resposta(texto):
    print(f'\033[92m [...] {texto} \033[0m', end='\n')
 
 def sucesso(texto):
-   print(f'\033[1;30;42m >>> {texto} <<< \033[m', end='\n')
+   print(f'\033[1;30;42m  [...] >>> {texto} <<< \033[m', end='\n')
 
 def titulo(texto):
     print(f'\033[1;33;44m {texto} \033[m', end='\n')
