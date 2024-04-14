@@ -57,3 +57,11 @@ class Analise_FluxPot():
             fig.show()
 
         plot_magnitude_tensao(data_vm_pu)
+
+    
+    def compara_tensao(self, data_vm_pu_calc, data_vm_pu_est):
+
+        
+        print(data_vm_pu_calc)
+        print(data_vm_pu_est)
+        print(data_vm_pu_calc-data_vm_pu_est)
