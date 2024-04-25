@@ -7,14 +7,13 @@ class FluxoDePotencia:
         from DATA_Simulacao import Log_Simulação
         from AnaliseFluxPot import Analise_FluxPot  
         # Começa a contagem de tempo
-        self.LOG_SIMULACAO = Log_Simulação()
+
+        data_DSIM["Modelo Executado"] = "Fluxo de Potência"
+        self.LOG_SIMULACAO = Log_Simulação(data_DSIM=data_DSIM)
         #############################
 
-
         self.RedeEletrica_simulada = RedeEletrica_simulada
-        self.LOG_SIMULACAO.Identificacao_Simulacao(data_DSIM)
-
-        self.LOG_SIMULACAO.msg_log("Leitura do Modelo Realizada")
+        self.LOG_SIMULACAO.msg_log(f"Sistema Elétrico Carregado:{None} ")
 
         self.executar()
         self.Analise = Analise_FluxPot()
@@ -31,6 +30,9 @@ class FluxoDePotencia:
 
         dados_tensao = self.RedeEletrica_simulada.net.res_bus
         self.Analise.analise_tensao(data_vm_pu=dados_tensao.vm_pu)
+        
+    def avaliacao_fluxo_linhas (self):
+        self.Analise.analise_fluxo_linhas(self.RedeEletrica_simulada.net)
         
 if __name__ == '__main__':
     import sys

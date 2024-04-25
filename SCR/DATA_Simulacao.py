@@ -4,12 +4,13 @@ import editor_texto
 
 class Log_Simulação():
 
-    def __init__(self) -> None:
+    def __init__(self, data_DSIM) -> None:
             self.inicio_simulacao = time.time()
-            editor_texto.resposta(self.msg_log("Inicializando Modelo"))
+            self.data_DSIM = data_DSIM
+            editor_texto.titulo(f"Inicializando Modelo: {self.data_DSIM['Modelo Executado']}")
 
     def msg_log(self, mensagem:str):
-        return mensagem
+        return editor_texto.resposta(mensagem)
 
     def log_fim_simulacao(self):
         

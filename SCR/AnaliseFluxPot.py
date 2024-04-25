@@ -81,19 +81,19 @@ class Analise_FluxPot():
             
             # Adicionar as duas barras ao gráfico de barras
             fig.add_trace(go.Bar(
-                x=categorias,
+                x=list(range(1, len(categorias) + 1)),
                 y=valores1,
                 name='Série 1'  # Nome da primeira série
             ))
             fig.add_trace(go.Bar(
-                x=categorias,
+                x=list(range(1, len(categorias) + 1)),
                 y=valores2,
                 name='Série 2'  # Nome da segunda série
             ))
             
             # Criar subplot para o gráfico de linha
             fig.add_trace(go.Scatter(
-                x=categorias,
+                x=list(range(1, len(categorias) + 1)),
                 y=diferenca.values.tolist(),
                 mode='lines+markers',
                 name='Diferença',  # Nome da linha
@@ -106,7 +106,7 @@ class Analise_FluxPot():
             # Atualizar layout
             fig.update_layout(
                 title='Gráfico de Barras e Linha Comparativos',
-                xaxis=dict(title='Categorias'),
+                xaxis=dict(title='Categorias', tickmode='array', tickvals=list(range(1, len(categorias) + 1)), ticktext=categorias),
                 yaxis=dict(title='Valores'),
                 yaxis2=dict(title='Diferença', overlaying='y', side='right', range=[-max_diff, max_diff]),  # Configurações do segundo eixo y
                 barmode='group'  # Agrupa as barras
@@ -116,6 +116,47 @@ class Analise_FluxPot():
             fig.show()
 
         plot_comparativo(series1=data_vm_pu_calc, series2=data_vm_pu_est)
-
-
         print(data_vm_pu_calc-data_vm_pu_est)
+
+    
+    def analise_fluxo_linhas(self, Rede_Analisada):
+
+        def plot_sankey_linhas(dataframe):
+
+            df_conectividade = dataframe.line
+            df_flux_lin = dataframe.res_line
+            df_conectividade['FLUXO_LINHA'] = df_flux_lin.p_from_mw - df_flux_lin.p_to_mw
+            df_conectividade['from_bus'] = df_conectividade['from_bus'] + 1
+            df_conectividade['to_bus'] = df_conectividade['to_bus'] + 1 
+
+            df_conectividade['NIVEL_PERCENTUAL'] = (df_flux_lin.loading_percent)
+
+            # Excluir ligações de um nó para si mesmo
+            df_conectividade = df_conectividade[df_conectividade['from_bus'] !=  df_conectividade['to_bus']]
+
+            # Criar lista de nós únicos
+            nodes = list(set(df_conectividade['from_bus'].tolist() +  df_conectividade['to_bus'].tolist()))
+
+            # Definir as cores com base no nível percentual
+            colors = ['green' if percent < 70 else 'yellow' if percent < 90 else 'red' for percent in df_conectividade['NIVEL_PERCENTUAL']]
+
+            fig = go.Figure(data=[go.Sankey(
+                node=dict(
+                    pad=15,
+                    thickness=20,
+                    line=dict(color="black", width=0.5),
+                    label=nodes,
+                    color="blue"  # Cor dos nós
+                ),
+                link=dict(
+                    source=df_conectividade['from_bus'].map(lambda x: nodes.index(x)),
+                    target= df_conectividade['to_bus'].map(lambda x: nodes.index(x)),
+                    value= df_conectividade['FLUXO_LINHA'],
+                    color=colors  # Cor dos links com base no nível percentual
+                )
+            )])
+
+            fig.update_layout(title_text="Diagrama Sankey", font_size=10)
+            fig.show()
+
+        plot_sankey_linhas(Rede_Analisada)
