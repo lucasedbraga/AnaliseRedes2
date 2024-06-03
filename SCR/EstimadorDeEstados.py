@@ -9,12 +9,11 @@ class EstimacaoDeEstados:
     def __init__(self, RedeEletrica_simulada, data_SIM) -> None:
 
         # Começa a contagem de tempo
-        self.LOG_SIMULACAO = Log_Simulação()
+        self.LOG_SIMULACAO = Log_Simulação(data_SIM=data_SIM)
         #############################          
         self.RedeEletrica_simulada = RedeEletrica_simulada
         self.flux_pot_resolvido = FluxoDePotencia(RedeEletrica_simulada=self.RedeEletrica_simulada,
-                                                  data_DSIM=data_SIM)
-        
+                                                  data_SIM=data_SIM)
         self.Analise = Analise_FluxPot()
         self.RedeEletrica_simulada.DMED()
         self.executar()      
@@ -44,5 +43,6 @@ if __name__ == '__main__':
     }
 
   
-    Estimador = EstimacaoDeEstados(RedeEletrica_simulada=RedeEletrica_simulada, data_SIM=data_SIM)
+    Estimador = EstimacaoDeEstados(RedeEletrica_simulada=RedeEletrica_simulada,
+                                   data_SIM=data_SIM)
     Estimador.compara_tensao()

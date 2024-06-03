@@ -2,14 +2,14 @@ import pandapower as pp
 
 class FluxoDePotencia:
 
-    def __init__(self, RedeEletrica_simulada, data_DSIM) -> None:
+    def __init__(self, RedeEletrica_simulada, data_SIM) -> None:
 
         from DATA_Simulacao import Log_Simulação
         from AnaliseFluxPot import Analise_FluxPot  
         # Começa a contagem de tempo
 
-        data_DSIM["Modelo Executado"] = "Fluxo de Potência"
-        self.LOG_SIMULACAO = Log_Simulação(data_DSIM=data_DSIM)
+        data_SIM["Modelo Executado"] = "Fluxo de Potência"
+        self.LOG_SIMULACAO = Log_Simulação(data_SIM=data_SIM)
         #############################
 
         self.RedeEletrica_simulada = RedeEletrica_simulada
@@ -23,16 +23,16 @@ class FluxoDePotencia:
         self.LOG_SIMULACAO.log_fim_simulacao()
 
     def executar(self):
-        pp.runpp(self.RedeEletrica_simulada.net)
+        pp.runpp(self.RedeEletrica_simulada)
         self.LOG_SIMULACAO.msg_log("Fluxo de Potência Executado")
     
     def avaliacao_tensao (self):
 
-        dados_tensao = self.RedeEletrica_simulada.net.res_bus
+        dados_tensao = self.RedeEletrica_simulada.res_bus
         self.Analise.analise_tensao(data_vm_pu=dados_tensao.vm_pu)
         
     def avaliacao_fluxo_linhas (self):
-        self.Analise.analise_fluxo_linhas(self.RedeEletrica_simulada.net)
+        self.Analise.analise_fluxo_linhas(self.RedeEletrica_simulada)
         
 if __name__ == '__main__':
     import sys
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     }
 
     flux_pot = FluxoDePotencia(RedeEletrica_simulada=RedeEletrica_simulada,
-                               data_DSIM=data_SIM)
+                               data_SIM=data_SIM)
     
     print(flux_pot.RedeEletrica_simulada.net.res_bus)
     
