@@ -28,7 +28,8 @@ class GeradorCenario:
         # Exemplo de uso
         valores_referencia = self.net.load       
         self.net.load['p_mw'] = gerar_valores_distribuicao_normal(valores_referencia['p_mw'])
-        self.net.load['q_mvar'] = gerar_valores_distribuicao_normal(valores_referencia['q_mvar'])
+        fator_de_potencia = 0.92
+        self.net.load['q_mvar'] = self.net.load['p_mw'].apply(lambda x: np.tan(np.arccos(fator_de_potencia)))
         
 
         

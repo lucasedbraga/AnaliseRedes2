@@ -13,7 +13,7 @@ class FluxoDePotencia:
         #############################
 
         self.RedeEletrica_simulada = RedeEletrica_simulada
-        self.LOG_SIMULACAO.msg_log(f"Sistema Elétrico Carregado:{None} ")
+        #self.LOG_SIMULACAO.msg_log(f"Sistema Elétrico Carregado:{None} ")
 
         self.executar()
         self.Analise = Analise_FluxPot()
